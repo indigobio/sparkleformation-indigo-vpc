@@ -11,14 +11,6 @@ SparkleFormation.dynamic(:vpc) do |name|
   #   }
   # }
 
-  parameters(:cidr_prefix) do
-    type 'Number'
-    min_value '16'
-    max_value '31'
-    default '16'
-    description 'The prefix of the CIDR block to assign to the VPC (172.X.0.0/16)'
-  end
-
   parameters(:enable_dns_support) do
     type 'String'
     allowed_values _array('true', 'false')
