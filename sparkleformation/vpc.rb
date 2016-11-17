@@ -19,7 +19,7 @@ EOF
 
   dynamic!(:private_subnets)
 
-  dynamic!(:hosted_zone, { :zone_name => ENV['private_domain'], :vpcs => [{ :id => ref!(:vpc), :region => region! }] })
+  dynamic!(:hosted_zone, 'private', :zone_name => ENV['private_domain'], :vpcs => [{ :id => ref!(:vpc), :region => region! }])
 
   dynamic!(:vpc_security_group, 'nat',
            :ingress_rules => [

@@ -1,4 +1,4 @@
-SparkleFormation.dynamic(:hosted_zone) do |options = {}|
+SparkleFormation.dynamic(:hosted_zone) do |name, options = {}|
 
   parameters(:hosted_zone_name) do
     type 'String'
@@ -8,7 +8,7 @@ SparkleFormation.dynamic(:hosted_zone) do |options = {}|
     constraint_description 'can only contain ASCII characters'
   end
 
-  dynamic!(:route53_hosted_zone, 'whatever').properties do
+  dynamic!(:route53_hosted_zone, name.gsub(/[.-]/, '_').to_sym).properties do
     name ref!(:hosted_zone_name)
     if options.has_key?(:vpcs)
       data![:VPCs] = _array(
