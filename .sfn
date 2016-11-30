@@ -5,9 +5,10 @@
 Configuration.new do
   #   Load SparklePacks
   sparkle_pack [
+    'sparkle-pack-aws-instance-types',
+    'sparkle-pack-aws-availability-zones',
     'sparkle-pack-aws-my-security-groups',
-    'sparkle-pack-aws-my-subnets',
-    'sparkle-pack-aws-availability-zones'
+    'sparkle-pack-aws-my-subnets'
   ]
   #   Set style of stack nesting
   apply_nesting 'deep'

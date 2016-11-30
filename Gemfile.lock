@@ -1,11 +1,19 @@
-PATH
-  remote: /Users/gswallow/src/sparkle-pack-aws-my-security-groups
+GIT
+  remote: https://github.com/gswallow/sparkle-pack-aws-instance-types.git
+  revision: fdb26f14169311915fc6eba63c7d2d300b55177e
+  specs:
+    sparkle-pack-aws-instance-types (0.0.1)
+
+GIT
+  remote: https://github.com/gswallow/sparkle-pack-aws-my-security-groups.git
+  revision: ae04e2304ae8b392fd814114657adf52cbe1b544
   specs:
     sparkle-pack-aws-my-security-groups (0.0.1)
       aws-sdk-core (~> 2)
 
-PATH
-  remote: /Users/gswallow/src/sparkle-pack-aws-my-subnets
+GIT
+  remote: https://github.com/gswallow/sparkle-pack-aws-my-subnets.git
+  revision: 7fc8e4d51a0ed3f96615596068f80b8c0a2b4d54
   specs:
     sparkle-pack-aws-my-subnets (0.0.1)
       aws-sdk-core (~> 2)
@@ -111,6 +119,7 @@ PLATFORMS
 DEPENDENCIES
   sfn
   sparkle-pack-aws-availability-zones
+  sparkle-pack-aws-instance-types!
   sparkle-pack-aws-my-security-groups!
   sparkle-pack-aws-my-subnets!
 
