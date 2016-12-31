@@ -30,8 +30,8 @@ EOF
 
   dynamic!(:vpc_security_group, 'private', :ingress_rules => [])
 
-  dynamic!(:security_group_ingress, 'nat-to-private-all', :source_sg => :nat_ec2_security_group, :ip_protocol => '-1', :from_port => '-1', :to_port => '-1', :target_sg => :private_ec2_security_group)
-  dynamic!(:security_group_ingress, 'private-to-nat-all', :source_sg => :private_ec2_security_group, :ip_protocol => '-1', :from_port => '-1', :to_port => '-1', :target_sg => :nat_ec2_security_group)
+  dynamic!(:security_group_ingress, 'nat-to-private-all', :source_sg => attr!(:nat_ec2_security_group, 'GroupId'), :ip_protocol => '-1', :from_port => '-1', :to_port => '-1', :target_sg => :private_ec2_security_group)
+  dynamic!(:security_group_ingress, 'private-to-nat-all', :source_sg => attr!(:private_ec2_security_group, 'GroupId'), :ip_protocol => '-1', :from_port => '-1', :to_port => '-1', :target_sg => :nat_ec2_security_group)
 
   dynamic!(:launch_config, 'nat_instances', :public_ips => true, :instance_id => :nat_instance, :security_groups => [:nat_ec2_security_group])
   dynamic!(:auto_scaling_group, 'nat_instances', :launch_config => :nat_instances_auto_scaling_launch_configuration, :subnets => public_subnets )
