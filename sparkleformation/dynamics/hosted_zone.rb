@@ -1,6 +1,6 @@
 SparkleFormation.dynamic(:hosted_zone) do |name, options = {}|
 
-  parameters(:hosted_zone_name) do
+  parameters("#{name}_hosted_zone_name".to_sym) do
     type 'String'
     allowed_pattern "[\\x20-\\x7E]*"
     default options.fetch(:zone_name, ENV['private_domain'])
@@ -9,7 +9,7 @@ SparkleFormation.dynamic(:hosted_zone) do |name, options = {}|
   end
 
   dynamic!(:route53_hosted_zone, name.gsub(/[.-]/, '_').to_sym).properties do
-    name ref!(:hosted_zone_name)
+    name ref!("#{name}_hosted_zone_name".to_sym)
     if options.has_key?(:vpcs)
       data![:VPCs] = _array(
         *options[:vpcs].map { |vpc| -> {

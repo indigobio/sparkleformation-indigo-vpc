@@ -21,6 +21,8 @@ EOF
 
   dynamic!(:hosted_zone, 'private', :zone_name => ENV['private_domain'], :vpcs => [{ :id => ref!(:vpc), :region => region! }])
 
+  dynamic!(:hosted_zone, 'k8s', :zone_name => "k8s.#{ENV['public_domain']}")
+
   dynamic!(:vpc_security_group, 'nat',
            :ingress_rules => [
              { :cidr_ip => ref!(:allow_ssh_from), :ip_protocol => 'tcp', :from_port => '22', :to_port => '22' }
