@@ -55,6 +55,14 @@ SparkleFormation.dynamic(:vpc) do |name|
         -> {
           key 'Environment'
           value ENV['environment']
+        },
+        -> {
+          key 'KubernetesCluster'
+          value "k8s.#{ENV['public_domain']}"
+        },
+        -> {
+          key "kubernetes.io/cluster/k8s.#{ENV['public_domain']}"
+          value 'shared'
         }
       )
     end

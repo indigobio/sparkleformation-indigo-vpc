@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: https://github.com/gswallow/sparkle-pack-aws-my-subnets.git
-  revision: c111d1d9f15a17b4487adcf68be76f1b985677b6
+  revision: 17fc47ac67be5097ff3891620db8dabcc056bb58
   specs:
     sparkle-pack-aws-my-subnets (0.0.1)
       aws-sdk-core (~> 2)
