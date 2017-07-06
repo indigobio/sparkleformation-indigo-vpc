@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: https://github.com/gswallow/sparkle-pack-aws-my-subnets.git
-  revision: 17fc47ac67be5097ff3891620db8dabcc056bb58
+  revision: 0f510df67d8e9dc672f6516b1c4e0bd6380552af
   specs:
     sparkle-pack-aws-my-subnets (0.0.1)
       aws-sdk-core (~> 2)
@@ -31,7 +31,7 @@ GEM
       public_suffix (~> 2.0, >= 2.0.2)
     attribute_struct (0.4.2)
       bogo (>= 0.1.31, < 0.3.0)
-    aws-sdk-core (2.10.8)
+    aws-sdk-core (2.10.9)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
     aws-sigv4 (1.0.0)
@@ -85,7 +85,6 @@ GEM
     miasma-open-stack (0.1.4)
     miasma-rackspace (0.1.2)
       miasma-open-stack
-    miasma-terraform (0.1.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
@@ -94,9 +93,9 @@ GEM
     net-ssh (4.1.0)
     paint (2.0.0)
     public_suffix (2.0.5)
-    sfn (3.0.26)
+    sfn (3.0.20)
       bogo-cli (>= 0.2.5, < 0.4)
-      bogo-ui (>= 0.1.22, < 0.4)
+      bogo-ui (>= 0.1.20, < 0.4)
       graph (~> 2.8.1)
       hashdiff (~> 0.2.2)
       jmespath
@@ -106,9 +105,8 @@ GEM
       miasma-google (>= 0.1.0, < 0.3)
       miasma-open-stack (>= 0.1.0, < 0.3)
       miasma-rackspace (>= 0.1.0, < 0.3)
-      miasma-terraform (>= 0.1.0, < 0.2.0)
       net-ssh
-      sparkle_formation (>= 3.0.11, < 4)
+      sparkle_formation (>= 3.0.3, < 4)
     slop (3.6.0)
     sparkle-pack-aws-availability-zones (0.1.2)
       aws-sdk-core (~> 2.2)
@@ -125,7 +123,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  sfn
+  sfn (= 3.0.20)
   sparkle-pack-aws-availability-zones
   sparkle-pack-aws-instance-types!
   sparkle-pack-aws-my-security-groups!
