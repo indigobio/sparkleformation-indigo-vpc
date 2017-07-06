@@ -29,7 +29,7 @@ resp = client.change_resource_record_sets({
         "resource_record_set": {
           "name": "k8s.#{ENV['public_domain']}.",
           "resource_records": records,
-          "ttl": 43200,
+          "ttl": 60,
           "type": "NS"
         }
       }
