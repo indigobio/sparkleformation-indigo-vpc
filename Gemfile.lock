@@ -24,6 +24,27 @@ GIT
   specs:
     sparkle-pack-git-rev-outputs (0.0.1)
 
+GIT
+  remote: https://github.com/sparkleformation/sfn.git
+  revision: 6c0187b92639b692a4afa3a8d7988894c77b0b33
+  ref: 6c0187b92639b692a4afa3a8d7988894c77b0b33
+  specs:
+    sfn (3.0.27)
+      bogo-cli (>= 0.2.5, < 0.4)
+      bogo-ui (>= 0.1.22, < 0.4)
+      graph (~> 2.8.1)
+      hashdiff (~> 0.2.2)
+      jmespath
+      miasma (>= 0.3.0, < 0.4)
+      miasma-aws (>= 0.3.6, < 0.4)
+      miasma-azure (>= 0.1.0, < 0.3)
+      miasma-google (>= 0.1.0, < 0.3)
+      miasma-open-stack (>= 0.1.0, < 0.3)
+      miasma-rackspace (>= 0.1.0, < 0.3)
+      miasma-terraform (>= 0.1.0, < 0.2.0)
+      net-ssh
+      sparkle_formation (>= 3.0.11, < 4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -85,6 +106,7 @@ GEM
     miasma-open-stack (0.1.4)
     miasma-rackspace (0.1.2)
       miasma-open-stack
+    miasma-terraform (0.1.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
@@ -93,20 +115,6 @@ GEM
     net-ssh (4.1.0)
     paint (2.0.0)
     public_suffix (2.0.5)
-    sfn (3.0.20)
-      bogo-cli (>= 0.2.5, < 0.4)
-      bogo-ui (>= 0.1.20, < 0.4)
-      graph (~> 2.8.1)
-      hashdiff (~> 0.2.2)
-      jmespath
-      miasma (>= 0.3.0, < 0.4)
-      miasma-aws (>= 0.3.6, < 0.4)
-      miasma-azure (>= 0.1.0, < 0.3)
-      miasma-google (>= 0.1.0, < 0.3)
-      miasma-open-stack (>= 0.1.0, < 0.3)
-      miasma-rackspace (>= 0.1.0, < 0.3)
-      net-ssh
-      sparkle_formation (>= 3.0.3, < 4)
     slop (3.6.0)
     sparkle-pack-aws-availability-zones (0.1.2)
       aws-sdk-core (~> 2.2)
@@ -123,7 +131,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  sfn (= 3.0.20)
+  sfn!
   sparkle-pack-aws-availability-zones
   sparkle-pack-aws-instance-types!
   sparkle-pack-aws-my-security-groups!
