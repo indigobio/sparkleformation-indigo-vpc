@@ -31,14 +31,14 @@ def get_subnets(vpc_id, type)
   }).subnets
 end
 
-def attrs_of(subnets, type)
+def attrs_of(subnets, type, pfx = nil)
   subnets.collect do |sn|
-    { 'id' => sn.subnet_id, 'name' => sn.availability_zone, 'type' => type, 'zone' => sn.availability_zone }
+    { 'id' => sn.subnet_id, 'name' => "#{pfx + "-" if !pfx.nil?}#{sn.availability_zone}", 'type' => type, 'zone' => sn.availability_zone }
   end
 end
 
 vpc_id = get_vpc
 
-subnets = attrs_of(get_subnets(vpc_id, 'Public'), 'Utility')
+subnets = attrs_of(get_subnets(vpc_id, 'Public'), 'Utility', 'utility')
 subnets.concat(attrs_of(get_subnets(vpc_id, 'Private'), 'Private'))
 puts YAML.dump('subnets' => subnets)
