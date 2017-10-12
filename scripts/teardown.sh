@@ -14,6 +14,20 @@ run_if_yes () {
   esac
 }
 
+del_stack () {
+  stack=$1
+  run_if_yes "aws cloudformation delete-stack --stack-name $stack"
+  echo -n "Waiting for resource deletion"
+  while [ "$(aws cloudformation describe-stacks --stack-name $stack --query 'Stacks[].StackStatus' --output text)" == "DELETE_IN_PROGRESS" ]; do
+    echo -n .
+    sleep 1
+  done
+  if [ "$(aws cloudformation describe-stacks --stack-name $stack --query 'Stacks[].StackStatus' --output text)" == "DELETE_FAILED" ]; then
+    echo "$stack failed to delete"
+    exit 1
+  fi
+}
+
 vpc=$(aws ec2 describe-vpcs --filters "Name=tag:Environment,Values=$environment" --query 'Vpcs[].VpcId' --output text)
 
 # Tear down any EC2 instances that may have been spun up by hand,
@@ -27,13 +41,14 @@ for orphan in $(aws ec2 describe-instances --filter "Name=vpc-id,Values=$vpc" --
   done
   echo
 done
+echo
 
 # Tear down Elastic Network Interfaces which get left behind by lambdas.
-for attachment in $(aws ec2 describe-network-interfaces --filters "Name=vpc-id,Values=$vpc" --query 'NetworkInterfaces[?Status == `in-use`].Attachment.AttachmentId' --output text); do
+for attachment in $(aws ec2 describe-network-interfaces --filters "Name=vpc-id,Values=$vpc" --query 'NetworkInterfaces[?Status == `in-use` && contains(Description, `NAT Gateway`) == `false`].Attachment.AttachmentId' --output text); do
   run_if_yes "aws ec2 detach-network-interface --attachment-id $attachment"
 done
 
-for eni in $(aws ec2 describe-network-interfaces --filters "Name=vpc-id,Values=$vpc" --query 'NetworkInterfaces[].NetworkInterfaceId' --output text); do
+for eni in $(aws ec2 describe-network-interfaces --filters "Name=vpc-id,Values=$vpc" --query 'NetworkInterfaces[?contains(Description, `NAT Gateway`) == `false`].NetworkInterfaceId' --output text); do
   run_if_yes "aws ec2 delete-network-interface --network-interface-id $eni"
 done
 
@@ -80,4 +95,4 @@ stack=$(aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPD
   --query 'StackSummaries[].StackId' --output table | grep ${environment}-vpc-${AWS_DEFAULT_REGION} \
   | awk '{print $2}')
 
-run_if_yes "aws cloudformation delete-stack --stack-name $stack"
+del_stack $stack
