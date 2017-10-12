@@ -28,30 +28,6 @@ del_stack () {
   fi
 }
 
-vpc=$(aws ec2 describe-vpcs --filters "Name=tag:Environment,Values=$environment" --query 'Vpcs[].VpcId' --output text)
-
-# Tear down any EC2 instances that may have been spun up by hand,
-# or detached from auto scaling groups to troubleshoot.
-for orphan in $(aws ec2 describe-instances --filter "Name=vpc-id,Values=$vpc" --query 'Reservations[].Instances[].InstanceId' --output text); do
-  run_if_yes "aws ec2 terminate-instances --instance-ids $orphan"
-  echo -n "waiting for $orphan to terminate"
-  while [ $(aws ec2 describe-instances --instance-ids $orphan --query 'Reservations[].Instances[].State.Name' --output text) != "terminated" ] ; do 
-    echo -n .
-    sleep 1
-  done
-  echo
-done
-echo
-
-# Tear down Elastic Network Interfaces which get left behind by lambdas.
-for attachment in $(aws ec2 describe-network-interfaces --filters "Name=vpc-id,Values=$vpc" --query 'NetworkInterfaces[?Status == `in-use` && contains(Description, `NAT Gateway`) == `false`].Attachment.AttachmentId' --output text); do
-  run_if_yes "aws ec2 detach-network-interface --attachment-id $attachment"
-done
-
-for eni in $(aws ec2 describe-network-interfaces --filters "Name=vpc-id,Values=$vpc" --query 'NetworkInterfaces[?contains(Description, `NAT Gateway`) == `false`].NetworkInterfaceId' --output text); do
-  run_if_yes "aws ec2 delete-network-interface --network-interface-id $eni"
-done
-
 # Tear down route53 records that exist in $private_domain and $public_domain
 # Basically, you have to send a change batch file, in JSON, to the route53
 # API with the full record set and a DELETE action, so we construct each
@@ -85,6 +61,30 @@ EOF
     done
   fi
 }
+
+vpc=$(aws ec2 describe-vpcs --filters "Name=tag:Environment,Values=$environment" --query 'Vpcs[].VpcId' --output text)
+
+# Tear down any EC2 instances that may have been spun up by hand,
+# or detached from auto scaling groups to troubleshoot.
+for orphan in $(aws ec2 describe-instances --filter "Name=vpc-id,Values=$vpc" --query 'Reservations[].Instances[].InstanceId' --output text); do
+  run_if_yes "aws ec2 terminate-instances --instance-ids $orphan"
+  echo -n "waiting for $orphan to terminate"
+  while [ $(aws ec2 describe-instances --instance-ids $orphan --query 'Reservations[].Instances[].State.Name' --output text) != "terminated" ] ; do 
+    echo -n .
+    sleep 1
+  done
+  echo
+done
+echo
+
+# Tear down Elastic Network Interfaces which get left behind by lambdas.
+for attachment in $(aws ec2 describe-network-interfaces --filters "Name=vpc-id,Values=$vpc" --query 'NetworkInterfaces[?Status == `in-use` && contains(Description, `NAT Gateway`) == `false`].Attachment.AttachmentId' --output text); do
+  run_if_yes "aws ec2 detach-network-interface --attachment-id $attachment"
+done
+
+for eni in $(aws ec2 describe-network-interfaces --filters "Name=vpc-id,Values=$vpc" --query 'NetworkInterfaces[?contains(Description, `NAT Gateway`) == `false`].NetworkInterfaceId' --output text); do
+  run_if_yes "aws ec2 delete-network-interface --network-interface-id $eni"
+done
 
 zap_records $public_domain
 zap_records k8s.$public_domain
