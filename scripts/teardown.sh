@@ -63,6 +63,10 @@ EOF
 }
 
 vpc=$(aws ec2 describe-vpcs --filters "Name=tag:Environment,Values=$environment" --query 'Vpcs[].VpcId' --output text)
+if [ -z "$vpc" ]; then
+  echo "No vpc found."
+  exit
+fi
 
 # Tear down any EC2 instances that may have been spun up by hand,
 # or detached from auto scaling groups to troubleshoot.
@@ -95,4 +99,8 @@ stack=$(aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPD
   --query 'StackSummaries[].StackId' --output table | grep ${environment}-vpc-${AWS_DEFAULT_REGION} \
   | awk '{print $2}')
 
-del_stack $stack
+if [ -n "$stack" ]; then
+  del_stack $stack
+else
+  echo "No stack found."
+fi
